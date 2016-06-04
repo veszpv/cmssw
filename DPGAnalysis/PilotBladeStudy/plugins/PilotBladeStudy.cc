@@ -37,6 +37,24 @@ PilotBladeStudy::PilotBladeStudy(edm::ParameterSet const& iConfig) : iConfig_(iC
   trackingErrorToken_	    = consumes< edm::EDCollection<DetId> >(edm::InputTag("siPixelDigis"));
   SiPixelRawDataErrorToken_ = consumes< edm::DetSetVector<SiPixelRawDataError> >(edm::InputTag("PBDigis"));
   userErrorToken_	    = consumes< edm::EDCollection<DetId> >(edm::InputTag("siPixelDigis", "UserErrorModules"));
+
+  detIdFromFED40_[1]=344133892; // BmO_D3_BLD11_PNL1
+  detIdFromFED40_[2]=344133892; // BmO_D3_BLD11_PNL1
+  detIdFromFED40_[3]=344134148; // BmO_D3_BLD11_PNL2
+  detIdFromFED40_[4]=344134148; // BmO_D3_BLD11_PNL2
+  detIdFromFED40_[7]=344132868; // BmO_D3_BLD10_PNL1
+  detIdFromFED40_[8]=344132868; // BmO_D3_BLD10_PNL1
+  detIdFromFED40_[9]=344133124; // BmO_D3_BLD10_PNL2
+  detIdFromFED40_[10]=344133124; // BmO_D3_BLD10_PNL2
+  detIdFromFED40_[25]=344131844; // BmI_D3_BLD2_PNL1
+  detIdFromFED40_[26]=344131844; // BmI_D3_BLD2_PNL1
+  detIdFromFED40_[27]=344132100; // BmI_D3_BLD2_PNL2
+  detIdFromFED40_[28]=344132100; // BmI_D3_BLD2_PNL2
+  detIdFromFED40_[31]=344130820; // BmI_D3_BLD3_PNL1
+  detIdFromFED40_[32]=344130820; // BmI_D3_BLD3_PNL1
+  detIdFromFED40_[33]=344131076; // BmI_D3_BLD3_PNL2
+  detIdFromFED40_[34]=344131076; // BmI_D3_BLD3_PNL2
+
 }
 
 PilotBladeStudy::~PilotBladeStudy() { }
@@ -442,16 +460,15 @@ void PilotBladeStudy::readFEDErrors(const edm::Event& iEvent,
         } else if (itPixelError->getFedId()==40) {
 	  if (DEBUG) std::cout<<"Hack for Pilot Blade on FED40"<<std::endl;
 	  int type = itPixelError->getType();
-          federrors.insert(std::pair<uint32_t,int>(DetId(344130820).rawId(), type));
-          federrors.insert(std::pair<uint32_t,int>(DetId(344131844).rawId(), type));
-          federrors.insert(std::pair<uint32_t,int>(DetId(344132868).rawId(), type));
-          federrors.insert(std::pair<uint32_t,int>(DetId(344133892).rawId(), type));
-          federrors.insert(std::pair<uint32_t,int>(DetId(344131076).rawId(), type));
-          federrors.insert(std::pair<uint32_t,int>(DetId(344132100).rawId(), type));
-          federrors.insert(std::pair<uint32_t,int>(DetId(344133124).rawId(), type));
-          federrors.insert(std::pair<uint32_t,int>(DetId(344134148).rawId(), type));
-          if (type>24&&type<=40) federr[type-25]++;
-          else std::cout<<"ERROR: Found new FED error with not recognised Error type: "<<type<<std::endl;
+	  if (type==25 || type==30 || type==31 || type==36 || type==40) {
+	    cms_uint32_t LINK_mask = ~(~cms_uint32_t(0) << 6);
+	    std::map<int,int>::const_iterator it=detIdFromFED40_.find(int((itPixelError->getWord32() >> 26) & LINK_mask));
+	    if (it!=detIdFromFED40_.end()) {
+	      federrors.insert(std::pair<uint32_t,int>(DetId(it->second).rawId(), type));
+	      if (type>24&&type<=40) federr[type-25]++;
+	      else std::cout<<"ERROR: Found new FED error with not recognised Error type: "<<type<<std::endl;
+	    }
+	  }
 	}
       }
     }
@@ -534,9 +551,9 @@ void PilotBladeStudy::analyzeDigis(const edm::Event& iEvent,
         if (verbosity>1) std::cout << "Not a pixel digi -- skipping the event" << std::endl;
         continue;
       }
-      // Take only the FPIX pixel digis
-      if (subDetId!=PixelSubdetector::PixelEndcap && cosmicsCase==false) {
-	if (verbosity>1) std::cout << "Not a FPIX digi -- skipping the event" << std::endl;
+      // Take only the FPIX- pixel digis
+      if ((subDetId!=PixelSubdetector::PixelEndcap || module_on.disk>0) && cosmicsCase==false) {
+	if (verbosity>1) std::cout << "Not a FPIX -Z digi -- skipping it" << std::endl;
         continue;
       }
       
@@ -605,6 +622,9 @@ void PilotBladeStudy::analyzeClusters(const edm::Event& iEvent,
       unsigned int subDetId=detId.subdetId();
       const PixelGeomDetUnit *pixdet = (const PixelGeomDetUnit*) tkgeom->idToDetUnit(detId);         
       
+      ModuleData module = getModuleData(detId.rawId(), federrors);
+      ModuleData module_on = getModuleData(detId.rawId(), federrors, "online");
+
       if (DEBUGClusters) std::cout << "Looping on the cluster sets ";
       
       // Take only pixel clusters. If this is a cosmicsCase then we save everything
@@ -614,6 +634,12 @@ void PilotBladeStudy::analyzeClusters(const edm::Event& iEvent,
         continue;
       }
       
+      // Take only the FPIX- pixel clusters
+      if ((subDetId!=PixelSubdetector::PixelEndcap || module_on.disk>0) && cosmicsCase==false) {
+	if (verbosity>1) std::cout << "Not a FPIX -Z cluster -- skipping it" << std::endl;
+        continue;
+      }
+
       // Create a itarator that loops on the clusters which are in the set
       edmNew::DetSet<SiPixelCluster>::const_iterator itCluster=itClusterSet->begin();
       for(; itCluster!=itClusterSet->end(); ++itCluster) {
@@ -640,8 +666,8 @@ void PilotBladeStudy::analyzeClusters(const edm::Event& iEvent,
 	clust.size=itCluster->size();
         clust.charge=itCluster->charge()/1000.0;
         
-        clust.mod    = getModuleData(detId.rawId(), federrors);
-        clust.mod_on = getModuleData(detId.rawId(), federrors, "online");
+        clust.mod    = module;
+        clust.mod_on = module_on;
 	
 	if (!nclu_mod.count(detId.rawId())) nclu_mod[detId.rawId()] = 0;
 	nclu_mod[detId.rawId()]++;

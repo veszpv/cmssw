@@ -153,6 +153,8 @@ class PilotBladeStudy : public edm::EDAnalyzer
   edm::EDGetTokenT<edm::EDCollection<DetId> > trackingErrorToken_;
   edm::EDGetTokenT<edm::EDCollection<DetId> > userErrorToken_;
 
+  std::map<int,int> detIdFromFED40_;
+
   TTree* eventTree_;
   //TTree* lumiTree_;
   TTree* runTree_;
