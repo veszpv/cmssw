@@ -277,9 +277,6 @@ void PilotBladeStudy::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 //   trajTree_->SetBranchAddress("clust_pixX", &traj.clu.pixX);
 //   trajTree_->SetBranchAddress("clust_pixY", &traj.clu.pixY);
   trajTree_->SetBranchAddress("track",      &traj.trk);
-  traj.nPixelHit = nPixelHit;
-  traj.nStripHit = nStripHit;
-  traj.nPBHit    = nPBHit;
   for (size_t itrk=0; itrk<trajmeas_.size(); itrk++) {
     for (size_t i=0; i<trajmeas_[itrk].size(); i++) {
       float minD=10000.;
@@ -296,6 +293,10 @@ void PilotBladeStudy::analyze(const edm::Event& iEvent, const edm::EventSetup& i
       }
       trajmeas_[itrk][i].d_hit = minD;
       traj = trajmeas_[itrk][i];
+      traj.nPixelHit = nPixelHit;
+      traj.nStripHit = nStripHit;
+      traj.nPBHit    = nPBHit;
+      traj.trk = tracks_[itrk];
       trajTree_->Fill();
     }
   }
@@ -717,6 +718,8 @@ void PilotBladeStudy::analyzeTracks(const edm::Event& iEvent,
       std::vector<TrajectoryMeasurement>::const_iterator itTraj;
       for(itTraj=trajMeasurements.begin(); itTraj!=trajMeasurements.end(); ++itTraj) {
 	TransientTrackingRecHit::ConstRecHitPointer recHit = itTraj->recHit();
+
+	if(recHit->geographicalId().det() != DetId::Tracker) continue;
 	uint subDetId = recHit->geographicalId().subdetId();
       
 	if (recHit->isValid()) {
@@ -765,22 +768,30 @@ void PilotBladeStudy::analyzeTrajs(const edm::Event& iEvent,
       std::vector<TrajectoryMeasurement> trajMeasurements = traj.measurements();
       std::vector<TrajectoryMeasurement>::const_iterator itTraj;
       std::vector<TrajMeasurement> trajmeas; 
-      TrajMeasurement meas;
       
       for(itTraj=trajMeasurements.begin(); itTraj!=trajMeasurements.end(); ++itTraj) {
 	
 	TransientTrackingRecHit::ConstRecHitPointer recHit = itTraj->recHit();
-	uint subDetId = recHit->geographicalId().subdetId();
-	
-	if (verbosity>1) std::cout << "detector ID: " << subDetId << std::endl;
 	
 	// Cutting on which trajectories we process
 	if(recHit->geographicalId().det() != DetId::Tracker) continue;
+
+	uint subDetId = recHit->geographicalId().subdetId();
+	if (verbosity>1) std::cout << "detector ID: " << subDetId << std::endl;
 		
+	if      (subDetId == PixelSubdetector::PixelBarrel) nPixelHit++;
+	else if (subDetId == PixelSubdetector::PixelEndcap) nPixelHit++;
+	else if (subDetId == StripSubdetector::TIB) nStripHit++;
+	else if (subDetId == StripSubdetector::TOB) nStripHit++;
+	else if (subDetId == StripSubdetector::TID) nStripHit++;
+	else if (subDetId == StripSubdetector::TEC) nStripHit++;
+
 	if( (subDetId == 3 || subDetId == 4 || subDetId == 5 ||subDetId == 6) && cosmicsCase == false) {
           if (verbosity>2) std::cout << " Hit found on the Strip detector " << std::endl;
           continue;
         }
+
+	TrajMeasurement meas;
                 
         meas.mod    = getModuleData(recHit->geographicalId().rawId(), federrors);
         meas.mod_on = getModuleData(recHit->geographicalId().rawId(), federrors, "online");
@@ -790,13 +801,6 @@ void PilotBladeStudy::analyzeTrajs(const edm::Event& iEvent,
         else if (recHit->getType() == TrackingRecHit::missing) 	meas.type=1;
         else if (recHit->getType() == TrackingRecHit::inactive) meas.type=2;
 	
-	if      (subDetId == PixelSubdetector::PixelBarrel) nPixelHit++;
-	else if (subDetId == PixelSubdetector::PixelEndcap) nPixelHit++;
-	else if (subDetId == StripSubdetector::TIB) nStripHit++;
-	else if (subDetId == StripSubdetector::TOB) nStripHit++;
-	else if (subDetId == StripSubdetector::TID) nStripHit++;
-	else if (subDetId == StripSubdetector::TEC) nStripHit++;
-
 	TrajectoryStateOnSurface predTrajState=trajStateComb(itTraj->forwardPredictedState(),
                                                                itTraj->backwardPredictedState());       
 	

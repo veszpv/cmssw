@@ -548,6 +548,9 @@ class PilotBladeStudy : public edm::EDAnalyzer
     trajmeas_.clear();
     clust_.clear();
     digis_.clear();
+    nPixelHit=0;
+    nStripHit=0;
+    nPBHit=0;
   }
 
   
