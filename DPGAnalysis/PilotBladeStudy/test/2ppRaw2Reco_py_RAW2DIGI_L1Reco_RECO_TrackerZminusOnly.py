@@ -91,6 +91,21 @@ process.RECOoutput = cms.OutputModule("PoolOutputModule",
 
 # Additional output definition
 
+# kill event without hits in Pilot Blade
+if PB :
+  process.bysipixelclustmulteventfilter = cms.EDFilter('BySiPixelClusterMultiplicityEventFilter',
+                                               multiplicityConfig = cms.PSet(
+                                                                  collectionName = cms.InputTag("PBClusters"),
+                                                                  moduleThreshold = cms.untracked.int32(-1),
+                                                                  useQuality = cms.untracked.bool(False),
+                                                                  qualityLabel = cms.untracked.string("")
+                                                                  ),
+                                               cut = cms.string("mult > 0")
+                                               )
+
+  process.PBClusterFilter_step = cms.Path(process.bysipixelclustmulteventfilter)
+  process.RECOoutput.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring("PBClusterFilter_step"))
+
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data', '')
@@ -222,7 +237,8 @@ process.schedule = cms.Schedule(
     #PilotBlade part
     process.PBDigi_step,
     process.pilotBladeReco_step,
-    
+    process.PBClusterFilter_step,
+  
     #end part 
     process.endjob_step,
     process.output_step
