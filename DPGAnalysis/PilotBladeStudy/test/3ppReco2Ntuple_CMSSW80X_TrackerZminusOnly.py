@@ -71,6 +71,8 @@ process.load("RecoTracker.TrackProducer.TrackRefitters_cff")
 process.Refitter = process.TrackRefitterP5.clone()
 process.Refitter.src = 'generalTracks'
 process.Refitter.TrajectoryInEvent = True
+process.MeasurementTrackerEvent.stripClusterProducer = "SiStripClustersFromRawFacility"
+
 #-------------------------------------------------------
 
 #------------------- PilotBladeStudy -------------------
