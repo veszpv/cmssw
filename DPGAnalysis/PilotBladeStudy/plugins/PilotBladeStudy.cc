@@ -55,6 +55,20 @@ PilotBladeStudy::PilotBladeStudy(edm::ParameterSet const& iConfig) : iConfig_(iC
   detIdFromFED40_[33]=344131076; // BmI_D3_BLD3_PNL2
   detIdFromFED40_[34]=344131076; // BmI_D3_BLD3_PNL2
 
+  if (iConfig_.exists("PositionCorrections")) {
+    Parameters positionCorrections = iConfig_.getUntrackedParameter<Parameters>("PositionCorrections");
+    for(Parameters::iterator it = positionCorrections.begin(); it != positionCorrections.end(); ++it) {
+      unsigned int id=(unsigned int)it->getParameter<unsigned int>("id");
+      float dx=(float)it->getParameter<double>("dx");
+      float dy=(float)it->getParameter<double>("dy");
+      posCorr_[id]=PositionCorrection(dx, dy);
+    }
+  }
+
+  for (std::map<unsigned int,PositionCorrection>::iterator it=posCorr_.begin(); it!=posCorr_.end(); it++) {
+    std::cout<<"Correcting position for "<<it->first<<" with ("<<it->second.dx<<", "<<it->second.dy<<")"<<std::endl;
+  }
+
 }
 
 PilotBladeStudy::~PilotBladeStudy() { }
@@ -926,12 +940,20 @@ void PilotBladeStudy::findClosestClusters(
 	if (DEBUGfindClust) std::cout << "PixelClusterParameterEstimator: " << lp << std::endl;
       }
       
-      float D = sqrt((lp.x()-lx)*(lp.x()-lx)+(lp.y()-ly)*(lp.y()-ly));
+      float lpx=lp.x();
+      float lpy=lp.y();
+      std::map<unsigned int,PositionCorrection>::const_iterator itCorr=posCorr_.find(detId.rawId());
+      if (itCorr!=posCorr_.end()) {
+	lpx+=itCorr->second.dx;
+	lpy+=itCorr->second.dy;
+      }
+
+      float D = sqrt((lpx-lx)*(lpx-lx)+(lpy-ly)*(lpy-ly));
       if (DEBUGfindClust) std::cout << "Value of the D: " << D << std::endl; 
       if (D<minD) {
 	minD=D;
-	dx_cl=lp.x();
-	dy_cl=lp.y();
+	dx_cl=lpx;
+	dy_cl=lpy;
 	itClosestCluster = itCluster;
       } 
     } // loop on cluster sets

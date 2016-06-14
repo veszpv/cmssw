@@ -86,7 +86,34 @@ process.PilotBladeStudy = cms.EDAnalyzer("PilotBladeStudy",
         "HLT_Physics",
         "HLT_Random",
         "HLT_MinBias"
-        )
+        ),
+  PositionCorrections = cms.untracked.VPSet(
+       cms.PSet(
+            id = cms.uint32(344132868),
+            dx = cms.double(-0.1476),
+            dy = cms.double(0.2455)
+        ),
+       cms.PSet(
+            id = cms.uint32(344134148),
+            dx = cms.double(-0.01271),
+            dy = cms.double(0.3227)
+        ),
+       cms.PSet(
+            id = cms.uint32(344131076),
+            dx = cms.double(-0.2564),
+            dy = cms.double(0.0032)
+        ),
+       cms.PSet(
+            id = cms.uint32(344132100),
+            dx = cms.double(-0.2183),
+            dy = cms.double(-0.1538)
+        ),
+       cms.PSet(
+            id = cms.uint32(344130820),
+            dx = cms.double(0.1980),
+            dy = cms.double(-0.086)
+        ),
+  )
 )
 #-------------------------------------------------------
 

@@ -179,6 +179,14 @@ class PilotBladeStudy : public edm::EDAnalyzer
   int nPBHit    = 0;
     
  public:
+  struct PositionCorrection {
+    float dx;
+    float dy;
+    PositionCorrection(float x=0.0, float y=0.0) { dx=x; dy=y; }
+  };
+
+  std::map<unsigned int,PositionCorrection> posCorr_;
+  typedef std::vector< edm::ParameterSet > Parameters;
 
 // ------------------------------- EventData info ------------------------------
   class EventData {
