@@ -466,24 +466,12 @@ void PilotBladeStudy::readFEDErrors(const edm::Event& iEvent,
           std::cout << "Error message: " << itPixelError->getMessage() << std::endl;
 	  std::cout << "detId" << itPixelErrorSet->detId() << std::endl;
         }
+	int type = itPixelError->getType();
+	if (type>24&&type<=40) federr[type-25]++;
+	else std::cout<<"ERROR: Found new FED error with not recognised Error type: "<<type<<std::endl;
         if (itPixelErrorSet->detId()!=0xffffffff) {
           DetId detId(itPixelErrorSet->detId());
-          int type = itPixelError->getType();
           federrors.insert(std::pair<uint32_t,int>(detId.rawId(), type));
-          if (type>24&&type<=40) federr[type-25]++;
-          else std::cout<<"ERROR: Found new FED error with not recognised Error type: "<<type<<std::endl;
-        } else if (itPixelError->getFedId()==40) {
-	  if (DEBUG) std::cout<<"Hack for Pilot Blade on FED40"<<std::endl;
-	  int type = itPixelError->getType();
-	  if (type==25 || type==30 || type==31 || type==36 || type==40) {
-	    cms_uint32_t LINK_mask = ~(~cms_uint32_t(0) << 6);
-	    std::map<int,int>::const_iterator it=detIdFromFED40_.find(int((itPixelError->getWord32() >> 26) & LINK_mask));
-	    if (it!=detIdFromFED40_.end()) {
-	      federrors.insert(std::pair<uint32_t,int>(DetId(it->second).rawId(), type));
-	      if (type>24&&type<=40) federr[type-25]++;
-	      else std::cout<<"ERROR: Found new FED error with not recognised Error type: "<<type<<std::endl;
-	    }
-	  }
 	}
       }
     }
