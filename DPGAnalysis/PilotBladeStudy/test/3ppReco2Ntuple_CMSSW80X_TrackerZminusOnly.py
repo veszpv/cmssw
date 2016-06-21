@@ -113,7 +113,16 @@ process.PilotBladeStudy = cms.EDAnalyzer("PilotBladeStudy",
             dx = cms.double(0.1980),
             dy = cms.double(-0.086)
         ),
-  )
+  ),
+  FiducialRegions = cms.untracked.VPSet(
+       cms.PSet(
+            id = cms.uint32(344132868),
+            marginX = cms.double(0.1),
+            marginY = cms.double(0.1),
+            rocX = cms.vint32(-1,-1,1,1),
+            rocY = cms.vint32(1,2,1,2)
+        )
+  )                                       
 )
 #-------------------------------------------------------
 

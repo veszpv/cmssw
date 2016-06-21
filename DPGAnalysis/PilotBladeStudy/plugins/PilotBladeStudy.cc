@@ -69,6 +69,30 @@ PilotBladeStudy::PilotBladeStudy(edm::ParameterSet const& iConfig) : iConfig_(iC
     std::cout<<"Correcting position for "<<it->first<<" with ("<<it->second.dx<<", "<<it->second.dy<<")"<<std::endl;
   }
 
+
+  if (iConfig_.exists("FiducialRegions")) {
+    Parameters fiducialRegions = iConfig_.getUntrackedParameter<Parameters>("FiducialRegions");
+    for(Parameters::iterator it = fiducialRegions.begin(); it != fiducialRegions.end(); ++it) {
+      unsigned int id=(unsigned int)it->getParameter<unsigned int>("id");
+      float marginX=(float)it->getParameter<double>("marginX");
+      float marginY=(float)it->getParameter<double>("marginY");
+      std::vector<int> rocX = it->getParameter<std::vector<int> > ("rocX");
+      std::vector<int> rocY = it->getParameter<std::vector<int> > ("rocY");
+      if (rocX.size()!=rocY.size()) {
+	std::cout<<"***ERROR: Skipping detId. Number of ROC X indices is not equal to Y for det Id "<<id<<std::endl;
+	continue;
+      }
+      std::vector<FiducialRegion> rocs;
+      for (size_t i=0; i<rocX.size(); i++) rocs.push_back(FiducialRegion(rocX[i], rocY[i], marginX, marginY));
+      fidReg_[id]=rocs;
+    }
+  }
+
+  for (std::map<unsigned int,std::vector<FiducialRegion> >::iterator it=fidReg_.begin(); it!=fidReg_.end(); it++) {
+    std::cout<<"Fiducial regions in detID "<<it->first<< " are in ROCs" << std::endl;
+    for (size_t i=0; i<it->second.size(); i++) std::cout<< it->second[i].print() <<std::endl;
+  }
+
 }
 
 PilotBladeStudy::~PilotBladeStudy() { }
@@ -799,6 +823,7 @@ void PilotBladeStudy::analyzeTrajs(const edm::Event& iEvent,
         meas.mod_on = getModuleData(recHit->geographicalId().rawId(), federrors, "online");
 		
 	// Hit type codes: valid = 0, missing = 1, inactive = 2
+	meas.type=NOVAL_I;
 	if 	(recHit->getType() == TrackingRecHit::valid) 	meas.type=0;
         else if (recHit->getType() == TrackingRecHit::missing) 	meas.type=1;
         else if (recHit->getType() == TrackingRecHit::inactive) meas.type=2;
@@ -810,7 +835,18 @@ void PilotBladeStudy::analyzeTrajs(const edm::Event& iEvent,
         meas.ly=predTrajState.localPosition().y();
 	meas.lx_err=predTrajState.localError().positionError().xx();
         meas.ly_err=predTrajState.localError().positionError().yy();
-	
+
+	std::map<unsigned int,std::vector<FiducialRegion> >::iterator it_mod=fidReg_.find(recHit->geographicalId().rawId());
+	if (it_mod!=fidReg_.end()) {
+	  int rocx=meas.getROCx();
+	  int rocy=meas.getROCy();
+	  for (size_t i=0; i<it_mod->second.size(); i++) {
+	    if (rocx==it_mod->second[i].rocX && rocy==it_mod->second[i].rocY) {
+	      if (meas.isWithinROCFiducial(it_mod->second[i].marginX, it_mod->second[i].marginY)) meas.type+=100;
+	    }
+	  }
+	}
+
         meas.glx=predTrajState.globalPosition().x();
         meas.gly=predTrajState.globalPosition().y();
         meas.glz=predTrajState.globalPosition().z();
