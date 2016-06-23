@@ -686,6 +686,8 @@ void PilotBladeStudy::analyzeClusters(const edm::Event& iEvent,
 	
         clust.x=itCluster->x();
         clust.y=itCluster->y();
+        clust.lx=lp.x();
+	clust.ly=lp.y();
         clust.glx = gp.x();
         clust.gly = gp.y();
         clust.glz = gp.z();

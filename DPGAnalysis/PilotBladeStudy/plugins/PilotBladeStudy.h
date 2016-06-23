@@ -318,6 +318,8 @@ class PilotBladeStudy : public edm::EDAnalyzer
    public:
     float x;
     float y;
+    float lx;
+    float ly;
     float glx;
     float gly;
     float glz;
@@ -333,6 +335,8 @@ class PilotBladeStudy : public edm::EDAnalyzer
     void init() {
       x=NOVAL_F;
       y=NOVAL_F;
+      lx=NOVAL_F;
+      ly=NOVAL_F;
       glx=NOVAL_F;
       gly=NOVAL_F;
       glz=NOVAL_F;
@@ -342,7 +346,7 @@ class PilotBladeStudy : public edm::EDAnalyzer
       
       nclu_mod=NOVAL_I;
 
-      list="x/F:y/F:glx/F:gly/F:glz/F:size/I:charge/F:nclu_mod/I";
+      list="x/F:y/F:lx/F:ly/F:glx/F:gly/F:glz/F:size/I:charge/F:nclu_mod/I";
     }
 
     int getROCx() { return (x>=0 && x<160) ? int(x)/80-1+(int(x)/80) : -9999;  }
