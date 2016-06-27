@@ -1,0 +1,51 @@
+import FreeCAD
+import Part
+import Mesh
+
+def plane(x1, y1, z1, x2, y2, z2, x3, y3, z3):
+   p = Mesh.Mesh([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3], [x1,y1,z1], [x3,y3,z3], [x1+(x3-x2),y1+(y3-y2),z1+(z3-z2)]])
+   return p
+
+def module(name, x1,y1,z1,x2,y2,z2,x3,y3,z3,x4,y4,z4):
+   p1 = plane(x3,y3,z3,x2,y2,z2,x1,y1,z1)
+   dx34=x4-x3
+   dy34=y4-y3
+   dz34=z4-z3
+   p2 = plane(x1+dx34,y1+dy34,z1+dz34,x2+dx34,y2+dy34,z2+dz34,x4,y4,z4)
+   p3 = plane(x1+dx34,y1+dy34,z1+dz34,x1,y1,z1,x2,y2,z2)
+   dx21=x1-x2
+   dy21=y1-y2
+   dz21=z1-z2
+   p4 = plane(x4,y4,z4,x3,y3,z3,x3+dx21,y3+dy21,z3+dz21)
+   p5 = plane(x2,y2,z2,x3,y3,z3,x4,y4,z4)
+   p6 = plane(x4+dx21,y4+dy21,z4+dz21,x3+dx21,y3+dy21,z3+dz21,x1,y1,z1)
+
+   o=App.ActiveDocument.addObject("App::DocumentObjectGroup",name)
+   mname=name+"_1"
+   m1 = App.ActiveDocument.addObject("Mesh::Feature",mname)
+   m1.Mesh = p1
+   o.addObject(m1)
+   mname=name+"_2"
+   m2 = App.ActiveDocument.addObject("Mesh::Feature",mname)
+   m2.Mesh = p2
+   o.addObject(m2)
+   mname=name+"_3"
+   m3 = App.ActiveDocument.addObject("Mesh::Feature",mname)
+   m3.Mesh = p3
+   o.addObject(m3)
+   mname=name+"_4"
+   m4 = App.ActiveDocument.addObject("Mesh::Feature",mname)
+   m4.Mesh = p4
+   o.addObject(m4)
+   mname=name+"_5"
+   m5 = App.ActiveDocument.addObject("Mesh::Feature",mname)
+   m5.Mesh = p5
+   o.addObject(m5)
+   mname=name+"_6"
+   m6 = App.ActiveDocument.addObject("Mesh::Feature",mname)
+   m6.Mesh = p6
+   o.addObject(m6)
+   return o
+   
+
+

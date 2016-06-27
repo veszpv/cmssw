@@ -14,3 +14,7 @@
   <use name="Geometry/TrackerGeometryBuilder"/>
   <flags   EDM_PLUGIN="1"/>
 </library>
+<library   file="Phase1GeometryTopologyAnalyzer.cc" name="Phase1GeometryTopologyAnalyzer">
+  <use name="Geometry/TrackerGeometryBuilder"/>
+  <flags   EDM_PLUGIN="1"/>
+</library>

@@ -1,0 +1,1 @@
+cd - ; scramv1 b -j 8 ; cd - ; cmsrun phase1GeometryTopology_cfg.py ; cat header.txt > test.FCMacro ; cat phase1GeometryTopology_cfg.log | grep 'module' >> test.FCMacro ; cat phase1GeometryTopology_cfg.log | grep 'Object' >> test.FCMacro
