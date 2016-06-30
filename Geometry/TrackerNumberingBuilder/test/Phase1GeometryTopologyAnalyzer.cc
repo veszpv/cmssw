@@ -90,24 +90,34 @@ std::string Phase1GeometryTopologyAnalyzer::print(const TrackerTopology* tTopo, 
   // Printout for CMSSW checks
   if ( subdet == PixelSubdetector::PixelBarrel ) {
     // width is short edge along local x, length is long edge along local y
-    strstr << "Dimensions "<< "(" << surface.bounds().length() << ", "<< surface.bounds().width() << ", "<< surface.bounds().thickness() << "); ";
+    strstr << "Dimensions "<< "(" << ", "<< surface.bounds().width() << surface.bounds().length() << ", "<< surface.bounds().thickness() << "); ";
     strstr << "Center "<< "(" << gp.x() << ", "<< gp.y() << ", "<< gp.z() << "); ";
-    strstr << "Rotation "<< "(" << rot.x() << ", "<< rot.y() << ", "<< rot.z() << ", "<<angle<<")";
+    LocalVector lvx(1., 0., 0.);
+    GlobalVector gvx = surface.toGlobal(lvx);
+    float R_x_gvx=gvx.x()*gp.x()+gvx.y()*gp.y()+gvx.z()*gp.z();
+    strstr << "R="<< sqrt(gp.x()*gp.x()+gp.y()*gp.y()) << "; phi=" << (atan2(gp.y(), gp.x())/atan(1))*45 << "; R_x_gvx =" << ((R_x_gvx < 1e-6) ? 0 : R_x_gvx);
   } 
   else if ( subdet == PixelSubdetector::PixelEndcap ) {
     // width is short edge along local x, length is long edge along local y
-    strstr << "Dimensions "<< "(" << surface.bounds().length() << ", "<< surface.bounds().width() << ", "<< surface.bounds().thickness() << "); ";
+    strstr << "Dimensions "<< "(" << ", "<< surface.bounds().width() << surface.bounds().length() << ", "<< surface.bounds().thickness() << "); ";
     strstr << "Center "<< "(" << gp.x() << ", "<< gp.y() << ", "<< gp.z() << "); ";
-    strstr << "Rotation "<< "(" << rot.x() << ", "<< rot.y() << ", "<< rot.z() << ", "<<angle<<")";
+    LocalVector lvx(1., 0., 0.);
+    GlobalVector gvx = surface.toGlobal(lvx);
+    float R_x_gvx=gvx.x()*gp.x()+gvx.y()*gp.y()+gvx.z()*gp.z();
+    strstr << "R="<< sqrt(gp.x()*gp.x()+gp.y()*gp.y()) << "; phi=" << (atan2(gp.y(), gp.x())/atan(1))*45 << "; R_x_gvx =" << ((R_x_gvx < 1e-6) ? 0 : R_x_gvx);
   }
   
   // Printout for FreeCAD import
+//   if ( subdet == PixelSubdetector::PixelEndcap && tTopo->pxfDisk(id)==1 && tTopo->pxfSide(id)==2 && 
+//        ((tTopo->pxfBlade(id)>=1&&tTopo->pxfBlade(id)<=5) || (tTopo->pxfBlade(id)>=17&&tTopo->pxfBlade(id)<=22) || (tTopo->pxfBlade(id)>=23&&tTopo->pxfBlade(id)<=30) || (tTopo->pxfBlade(id)>=48&&tTopo->pxfBlade(id)<=56))
+//      ) {
   if ( subdet == PixelSubdetector::PixelEndcap && tTopo->pxfDisk(id)==1 && tTopo->pxfSide(id)==2 && 
        ((tTopo->pxfBlade(id)>=1&&tTopo->pxfBlade(id)<=5) || (tTopo->pxfBlade(id)>=17&&tTopo->pxfBlade(id)<=22) || (tTopo->pxfBlade(id)>=23&&tTopo->pxfBlade(id)<=30) || (tTopo->pxfBlade(id)>=48&&tTopo->pxfBlade(id)<=56))
-     ) {
-  //if ( (0) || ( subdet == PixelSubdetector::PixelBarrel && tTopo->pxbLayer(id) == 1) ) {
+       ) {
+//  if ( subdet == PixelSubdetector::PixelBarrel && tTopo->pxbLayer(id) == 2 && tTopo->pxbLadder(id)>=8 && tTopo->pxbLadder(id)<=21) {
+//  if ( subdet == PixelSubdetector::PixelBarrel && tTopo->pxbLayer(id) == 4) {
 
-    if (1) { // Building module from box using affin matrix for positioning
+    if (0) { // Building module from box using affin matrix for positioning
       float length = surface.bounds().width();
       float width =  surface.bounds().length();
       float height =  surface.bounds().thickness();
@@ -121,7 +131,8 @@ std::string Phase1GeometryTopologyAnalyzer::print(const TrackerTopology* tTopo, 
       GlobalVector gvz = surface.toGlobal(lvz);
       LocalPoint lp0(length/-2., width/-2., height/-2.);
       GlobalPoint gp0 = surface.toGlobal(lp0);
-
+      LocalPoint lp1(length/-2., width/-2., height/-1.);
+      GlobalPoint gp1 = surface.toGlobal(lp1);
 
       printf("App.ActiveDocument.addObject(\"Part::Box\",\"Box%d\")\n", id.rawId());
       printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d\").Length = %f\n", id.rawId(), length*10.);
@@ -130,6 +141,14 @@ std::string Phase1GeometryTopologyAnalyzer::print(const TrackerTopology* tTopo, 
       //     printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d\").Placement = FreeCAD.Placement(FreeCAD.Vector(%f,%f,%f), FreeCAD.Rotation(FreeCAD.Vector(%f,%f,%f), %f),FreeCAD.Vector(%f,%f,%f))\n", 
       // 	   id.rawId(), gp.x()-length/2., gp.y()-width/2., gp.z()-height/2., rot.x(), rot.y(), rot.z(), angle, length/2., width/2., height/2.);
       printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d\").Placement = %s\n", id.rawId(), print(gvx, gvy, gvz, gp0).c_str());
+      printf("Gui.getDocument(\"Unnamed\").getObject(\"Box%d\").ShapeColor=(0.0,1.0,0.0)\n", id.rawId());
+
+      printf("App.ActiveDocument.addObject(\"Part::Box\",\"Box%d_dir\")\n", id.rawId());
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d_dir\").Length = %f\n", id.rawId(), height*50.);
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d_dir\").Width = %f\n", id.rawId(),  height*50.);
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d_dir\").Height = %f\n", id.rawId(), height*100.);
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d_dir\").Placement = %s\n", id.rawId(), print(gvx, gvy, gvz, gp1).c_str());
+      printf("Gui.getDocument(\"Unnamed\").getObject(\"Box%d_dir\").ShapeColor=(1.0,0.0,0.0)\n", id.rawId());
     }
 
     if (0) { // Building module from meshes using 4 points (in local x-y-z, x points right, y points up): bottom-lower-right, bottom-upper-right, bottom-upper-left, top-upper-left
