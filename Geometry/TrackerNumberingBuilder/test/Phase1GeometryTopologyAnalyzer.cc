@@ -133,22 +133,23 @@ std::string Phase1GeometryTopologyAnalyzer::print(const TrackerTopology* tTopo, 
       GlobalPoint gp0 = surface.toGlobal(lp0);
       LocalPoint lp1(length/-2., width/-2., height/-1.);
       GlobalPoint gp1 = surface.toGlobal(lp1);
+      std::string box="Box";
 
-      printf("App.ActiveDocument.addObject(\"Part::Box\",\"Box%d\")\n", id.rawId());
-      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d\").Length = %f\n", id.rawId(), length*10.);
-      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d\").Width = %f\n", id.rawId(),  width*10.);
-      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d\").Height = %f\n", id.rawId(), height*10.);
-      //     printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d\").Placement = FreeCAD.Placement(FreeCAD.Vector(%f,%f,%f), FreeCAD.Rotation(FreeCAD.Vector(%f,%f,%f), %f),FreeCAD.Vector(%f,%f,%f))\n", 
+      printf("App.ActiveDocument.addObject(\"Part::Box\",\"%s%d\")\n", box.c_str(), id.rawId());
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"%s%d\").Length = %f\n", box.c_str(), id.rawId(), length*10.);
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"%s%d\").Width = %f\n", box.c_str(), id.rawId(),  width*10.);
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"%s%d\").Height = %f\n", box.c_str(), id.rawId(), height*10.);
+      //     printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"%s%d\").Placement = FreeCAD.Placement(FreeCAD.Vector(%f,%f,%f), FreeCAD.Rotation(FreeCAD.Vector(%f,%f,%f), %f),FreeCAD.Vector(%f,%f,%f))\n", 
       // 	   id.rawId(), gp.x()-length/2., gp.y()-width/2., gp.z()-height/2., rot.x(), rot.y(), rot.z(), angle, length/2., width/2., height/2.);
-      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d\").Placement = %s\n", id.rawId(), print(gvx, gvy, gvz, gp0).c_str());
-      printf("Gui.getDocument(\"Unnamed\").getObject(\"Box%d\").ShapeColor=(0.0,1.0,0.0)\n", id.rawId());
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"%s%d\").Placement = %s\n", box.c_str(), id.rawId(), print(gvx, gvy, gvz, gp0).c_str());
+      printf("Gui.getDocument(\"Unnamed\").getObject(\"%s%d\").ShapeColor=(0.0,1.0,0.0)\n", box.c_str(), id.rawId());
 
-      printf("App.ActiveDocument.addObject(\"Part::Box\",\"Box%d_dir\")\n", id.rawId());
-      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d_dir\").Length = %f\n", id.rawId(), height*50.);
-      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d_dir\").Width = %f\n", id.rawId(),  height*50.);
-      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d_dir\").Height = %f\n", id.rawId(), height*100.);
-      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"Box%d_dir\").Placement = %s\n", id.rawId(), print(gvx, gvy, gvz, gp1).c_str());
-      printf("Gui.getDocument(\"Unnamed\").getObject(\"Box%d_dir\").ShapeColor=(1.0,0.0,0.0)\n", id.rawId());
+      printf("App.ActiveDocument.addObject(\"Part::Box\",\"%s%d_dir\")\n", box.c_str(), id.rawId());
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"%s%d_dir\").Length = %f\n", box.c_str(), id.rawId(), height*50.);
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"%s%d_dir\").Width = %f\n", box.c_str(), id.rawId(),  height*50.);
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"%s%d_dir\").Height = %f\n", box.c_str(), id.rawId(), height*100.);
+      printf("FreeCAD.getDocument(\"Unnamed\").getObject(\"%s%d_dir\").Placement = %s\n", box.c_str(), id.rawId(), print(gvx, gvy, gvz, gp1).c_str());
+      printf("Gui.getDocument(\"Unnamed\").getObject(\"%s%d_dir\").ShapeColor=(1.0,0.0,0.0)\n", box.c_str(), id.rawId());
     }
 
     if (0) { // Building module from meshes using 4 points (in local x-y-z, x points right, y points up): bottom-lower-right, bottom-upper-right, bottom-upper-left, top-upper-left
