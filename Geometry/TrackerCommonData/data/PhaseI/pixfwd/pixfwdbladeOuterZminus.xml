@@ -50,10 +50,6 @@
 </ConstantsSection>
 
 <SolidSection label="pixfwdbladeOuterZminus.xml">
-  <!-- Trapezoid name="PixelForwardBlade"      dz="[ModuleT]+[BladeBaseT]/2."
-                                           bl1="[WedgeBot]/2." bl2="[WedgeBot]/2." h1="[WedgeH]/2."
-                                           tl1="[WedgeTop]/2." tl2="[WedgeTop]/2." h2="[WedgeH]/2."
-                                           alp1="0*deg"        alp2="0*deg"        theta="0*deg"   phi="0*deg" /-->
   <Trapezoid name="PixelForwardBladeBase"  dz="[BladeBaseT]/2"
                                            bl1="[WedgeBot]/2." bl2="[WedgeBot]/2." h1="[WedgeH]/2."
                                            tl1="[WedgeTop]/2." tl2="[WedgeTop]/2." h2="[WedgeH]/2."
@@ -110,14 +106,14 @@
   <UnionSolid name="PixelForwardBladeSideOne">
     <rSolid name="PixelForwardBladeBase"/>
     <rSolid name="PixelForwardModule"/>
-    <Translation x="[ModuleX]+[DetectorShiftX]"  y="[ModuleY]"  z="[BladeBaseT]/2+([ModuleT]+[EndHolder2T]+[FlexCableT])/2" />
+    <Translation x="[ModuleX]+[DetectorShiftX]"  y="[ModuleY]"  z="[BladeBaseT]/2+[ModuleT]/2" />
     <rRotation name="pixfwdbladeOuterZminus:RFacingIP"/>
   </UnionSolid>
 
   <UnionSolid name="PixelForwardBlade">
     <rSolid name="PixelForwardBladeSideOne"/>
     <rSolid name="PixelForwardModule"/>
-    <Translation x="-[ModuleX]+[DetectorShiftX]" y="[ModuleY]" z="-[BladeBaseT]/2-([ModuleT]+[EndHolder2T]+[FlexCableT])/2" />
+    <Translation x="-[ModuleX]+[DetectorShiftX]" y="[ModuleY]" z="-[BladeBaseT]/2-[ModuleT]/2" />
     <rRotation name="pixfwdbladeOuterZminus:RAwayIP"/>
   </UnionSolid>
 
