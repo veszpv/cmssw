@@ -106,14 +106,14 @@
   <UnionSolid name="PixelForwardBladeSideOne">
     <rSolid name="PixelForwardBladeBase"/>
     <rSolid name="PixelForwardModule"/>
-    <Translation x="[ModuleX]+[DetectorShiftX]"  y="[ModuleY]"  z="[BladeBaseT]/2+[ModuleT]/2" />
+    <Translation x="[ModuleX]+[DetectorShiftX]"  y="[ModuleY]"  z="-[BladeBaseT]/2-[ModuleT]/2" />
     <rRotation name="pixfwdbladeOuterZplus:RFacingIP"/>
   </UnionSolid>
 
   <UnionSolid name="PixelForwardBlade">
     <rSolid name="PixelForwardBladeSideOne"/>
     <rSolid name="PixelForwardModule"/>
-    <Translation x="-[ModuleX]+[DetectorShiftX]" y="[ModuleY]" z="-[BladeBaseT]/2-[ModuleT]/2" />
+    <Translation x="-[ModuleX]+[DetectorShiftX]" y="[ModuleY]" z="[BladeBaseT]/2+[ModuleT]/2" />
     <rRotation name="pixfwdbladeOuterZplus:RAwayIP"/>
   </UnionSolid>
 
