@@ -55,14 +55,16 @@ PixelROC::PixelROC(uint32_t du, int idDU, int idLk)
 // works for phase 1, find det side from the local method
 void PixelROC::initFrameConversionPhase1() {
   int side = 0;
+  int bpix_layer = 0;
   bool isBarrel = PixelModuleName::isBarrel(theDetUnit);
   if(isBarrel) {
     side = bpixSidePhase1(theDetUnit); // find the side for phase1
+    bpix_layer = bpixLayerPhase1(theDetUnit);
   } else {
     side = fpixSidePhase1(theDetUnit);
   }
 
-  theFrameConverter = FrameConversion(isBarrel,side, theIdDU);
+  theFrameConverter = FrameConversion(bpix_layer, side, theIdDU);
 
 }
 
