@@ -19,7 +19,7 @@ public:
     : theRowConversion( LinearConversion(rowOffset,rowSlopeSign) ),
     theCollumnConversion( LinearConversion(colOffset, colSlopeSign) ) {}
   // for phase1
-  FrameConversion(bool bpix, int side, int rocIdInDetUnit);
+  FrameConversion(int bpix_layer, int side, int rocIdInDetUnit);
 
   const sipixelobjects::LinearConversion & row() const { return theRowConversion; }
   const sipixelobjects::LinearConversion & collumn() const { return theCollumnConversion;}
