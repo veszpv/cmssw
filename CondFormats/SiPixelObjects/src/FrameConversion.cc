@@ -8,45 +8,115 @@ using namespace std;
 using namespace edm;
 using namespace sipixelobjects;
 
-FrameConversion::FrameConversion(bool bpix, int side, int rocIdInDetUnit) {
+FrameConversion::FrameConversion(int bpix_layer, int side, int rocIdInDetUnit) {
   int slopeRow =0;
   int slopeCol = 0;
   int  rowOffset = 0;
   int  colOffset = 0; 
  
-  if (bpix ) { // bpix 
+  if (bpix_layer!=0) { // bpix 
     
-    if (side==-1) {  // -Z side
+    if (bpix_layer==1) { // layer 1
 
-      if (rocIdInDetUnit <8) {
-	slopeRow = 1;
-	slopeCol = -1;
-	rowOffset = 0;
-	colOffset = (8-rocIdInDetUnit)*LocalPixel::numColsInRoc-1;	
-      } else {
-	slopeRow = -1;
-	slopeCol = 1;      
-	rowOffset = 2*LocalPixel::numRowsInRoc-1;
-	colOffset = (rocIdInDetUnit-8)*LocalPixel::numColsInRoc;
-      } // if roc
-      
-    } else {  // +Z side
-      
-      if (rocIdInDetUnit <8) {
-	slopeRow = -1;
-	slopeCol = 1;
-	rowOffset = 2*LocalPixel::numRowsInRoc-1;
-	colOffset = rocIdInDetUnit * LocalPixel::numColsInRoc; 
-      } else {
-	slopeRow = 1;
-	slopeCol = -1;
-	rowOffset = 0;
-	colOffset = (16-rocIdInDetUnit)*LocalPixel::numColsInRoc-1; 
-      }
-      
-    } // end if +-Z
+      if (side==-1) {  // -Z side
+	
+	if (rocIdInDetUnit <8) {
+	  if (rocIdInDetUnit <4) {
+	    slopeRow = 1;
+	    rowOffset = 0;
+	    slopeCol = 1;
+	    colOffset = (4+rocIdInDetUnit) * LocalPixel::numColsInRoc; 
+	  } else {
+	    slopeRow = -1;
+	    rowOffset = 2*LocalPixel::numRowsInRoc-1;
+	    //slopeCol = 1;
+	    //colOffset = (rocIdInDetUnit-4) * LocalPixel::numColsInRoc; 
+	    slopeCol = -1;
+	    colOffset = (12-rocIdInDetUnit)*LocalPixel::numColsInRoc-1;
+	  }
+	} else {
+	  if (rocIdInDetUnit <12) {
+	    slopeRow = -1;
+	    rowOffset = 2*LocalPixel::numRowsInRoc-1;
+	    slopeCol = -1;
+	    colOffset = (12-rocIdInDetUnit) * LocalPixel::numColsInRoc-1; 
+	  } else {
+	    slopeRow = 1;
+	    rowOffset = 0;
+	    //slopeCol = -1;
+	    //colOffset = (20-rocIdInDetUnit) * LocalPixel::numColsInRoc-1; 
+	    slopeCol = 1;
+	    colOffset = (rocIdInDetUnit-12)*LocalPixel::numColsInRoc;
+	  }
+	} // if roc
+	
+      } else {  // +Z side
+	
+	if (rocIdInDetUnit <8) {
+	  if (rocIdInDetUnit <4) {
+	    slopeRow = 1;
+	    rowOffset = 0;
+	    slopeCol = 1;
+	    colOffset = (rocIdInDetUnit+4) * LocalPixel::numColsInRoc; 
+	    //slopeCol = 1;
+	    //colOffset = rocIdInDetUnit * LocalPixel::numColsInRoc; 
+	  } else {
+	    slopeRow = -1;
+	    rowOffset = 2*LocalPixel::numRowsInRoc-1;
+	    slopeCol = -1;
+	    colOffset = (12-rocIdInDetUnit) * LocalPixel::numColsInRoc-1; 
+	  }
+	} else {
+	  if (rocIdInDetUnit <12) {
+	    slopeRow = -1;
+	    rowOffset = 2*LocalPixel::numRowsInRoc-1;
+	    slopeCol = -1;
+	    colOffset = (12-rocIdInDetUnit) * LocalPixel::numColsInRoc-1; 
+	    //slopeCol = -1;
+	    //colOffset = (16-rocIdInDetUnit)*LocalPixel::numColsInRoc-1; 
+	  } else {
+	    slopeRow = 1;
+	    rowOffset = 0;
+	    slopeCol = 1;
+	    colOffset = (rocIdInDetUnit-12) * LocalPixel::numColsInRoc; 
+	  }
+	}
+	
+      } // end if +-Z
 
+    } else {  // layer 2-4
 
+      if (side==-1) {  // -Z side
+	
+	if (rocIdInDetUnit <8) {
+	  slopeRow = -1;
+	  slopeCol = -1;
+	  rowOffset = 2*LocalPixel::numRowsInRoc-1;
+	  colOffset = (8-rocIdInDetUnit)*LocalPixel::numColsInRoc-1;	
+	} else {
+	  slopeRow = 1;
+	  slopeCol = 1;      
+	  rowOffset = 0;
+	  colOffset = (rocIdInDetUnit-8)*LocalPixel::numColsInRoc;
+	} // if roc
+	
+      } else {  // +Z side
+	
+	if (rocIdInDetUnit <8) {
+	  slopeRow = 1;
+	  slopeCol = 1;
+	  rowOffset = 0;
+	  colOffset = rocIdInDetUnit * LocalPixel::numColsInRoc; 
+	} else {
+	  slopeRow = -1;
+	  slopeCol = -1;
+	  rowOffset = 2*LocalPixel::numRowsInRoc-1;
+	  colOffset = (16-rocIdInDetUnit)*LocalPixel::numColsInRoc-1; 
+	}
+	
+      } // end if +-Z
+      
+    }
 
   } else { // fpix 
 
