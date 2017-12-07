@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<DDDefinition xmlns="http://www.cern.ch/cms/DDL" xmlns:xsi="http://www.cern.ch/www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cern.ch/cms/DDL ../../../DetectorDescription/Schema/DDLSchema.xsd">
+
+
+<ConstantsSection label="Phase2BeamTestConstants.xml" eval="true">
+
+<!-- ADJUST VALUES IN THIS SECTION AS MUCH AS YOU WANT ! -->
+
+<!-- DEFINE DUT HOLDER TRANSLATION AND TILT -->
+<Constant name="DUTTransX" value="0.0*mm"/>         <!-- Total DUT Holder translation along X axis -->
+<Constant name="DUTTransY" value="0.0*mm"/>         <!-- Total DUT Holder translation along Y axis -->
+<Constant name="DUTTransZ" value="0.0*mm"/>         <!-- Total DUT Holder translation along Z axis -->
+<Constant name="DUTTiltAngle" value="10.0*deg"/>    <!-- Angle around X, counted from (XY) plane. -->
+                                                    <!-- Angle is in [0 20] deg. -->
+                                                    <!-- No negative value!! If angle >= 0, please use DUTTiltPlus in telescope.xml, if angle < 0 please use DUTTiltMinus in telescope.xml -->
+
+<!-- DEFINE TELESCOPE ARMS AND PLANES -->
+<Constant name="InterArmDeltaZ" value="350.0*mm"/>  <!-- Total distance in Z between the centres of the 2 arms -->
+<Constant name="InterPlaneDeltaZ" value="50.0*mm"/> <!-- Total distance in Z between the centres of 2 consecutive planes -->
+<Constant name="PlaneTiltAngle" value="70.0*deg"/>  <!-- Angle around X, counted from (XZ) plane. No negative value possible. -->
+<Constant name="PlaneSkewAngle" value="30.0*deg"/>  <!-- Angle around Y, counted from (YZ) plane. No negative value possible. -->
+
+
+
+
+
+<!-- DONT TOUCH -->
+
+<!-- RENAMING PHASE 1 MODULES CONSTANTS FOR CLARITY -->
+<Constant name="Phase1BPIXModuleWidth" value="[Phase1BPIXLayer4Module:LadderWidth]"/>  <!-- = 24.5 mm, sensor active is 16.2 mm for Phase1 -->
+<Constant name="Phase1BPIXModuleLength" value="[Phase1BPIXLayer4Module:ModuleDz]"/>  <!-- = 67.0 mm, sensor active is 64.8 mm for Phase1 -->
+<Constant name="Phase1BPIXModuleThickness" value="[Phase1BPIXLayer4Module:Module23Thick]"/>  <!-- = 1.28 mm, sensor active is 0.285 mm for Phase1 -->
+</ConstantsSection>
+
+<!-- ROTATIONS USED TO PLACE DUT -->
+<RotationSection label="Phase2BeamTestConstants.xml">
+<Rotation name="DUTTiltMinus" thetaX="90*deg" phiX="0*deg" thetaY="90*deg+[DUTTiltAngle]" phiY="90*deg" thetaZ="[DUTTiltAngle]" phiZ="90*deg"/>
+<Rotation name="DUTTiltPlus" thetaX="90*deg" phiX="0*deg" thetaY="90*deg-[DUTTiltAngle]" phiY="90*deg" thetaZ="[DUTTiltAngle]" phiZ="270*deg"/>
+<Rotation name="PlaceDUTInDUTHolder" thetaX="90*deg" phiX="90*deg" thetaY="90*deg" phiY="180*deg" thetaZ="0*deg" phiZ="0*deg"/>
+</RotationSection>
+
+
+
+</DDDefinition>
+
+
+

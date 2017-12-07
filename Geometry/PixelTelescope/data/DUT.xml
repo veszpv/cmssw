@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+
+<DDDefinition xmlns="http://www.cern.ch/cms/DDL" xmlns:xsi="http://www.cern.ch/www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cern.ch/cms/DDL ../../../DetectorDescription/Schema/DDLSchema.xsd">
+
+
+
+<MaterialSection label="DUT.xml">
+
+<ElementaryMaterial name="tkLayout_SenSi" symbol="SenSi" atomicNumber="14" atomicWeight="28.2688*g/mole" density="2.33*g/cm3"/>
+<ElementaryMaterial name="tkLayout_Si" symbol="Si" atomicNumber="14" atomicWeight="28.2688*g/mole" density="2.33*g/cm3"/>
+<ElementaryMaterial name="tkLayout_2S-FEH-mix" symbol="2S-FEH-mix" atomicNumber="12" atomicWeight="20.4403*g/mole" density="1.83*g/cm3"/>
+<ElementaryMaterial name="tkLayout_2S-SEH-mix" symbol="2S-SEH-mix" atomicNumber="7" atomicWeight="12.6353*g/mole" density="1.22*g/cm3"/>
+<ElementaryMaterial name="tkLayout_Al" symbol="Al" atomicNumber="13" atomicWeight="27.1837*g/mole" density="2.7*g/cm3"/>
+<ElementaryMaterial name="tkLayout_Al-CF" symbol="Al-CF" atomicNumber="9" atomicWeight="18.1096*g/mole" density="2.4*g/cm3"/>
+<ElementaryMaterial name="tkLayout_Brass" symbol="Brass" atomicNumber="29" atomicWeight="62.9057*g/mole" density="8.7*g/cm3"/>
+<ElementaryMaterial name="tkLayout_CFRP" symbol="CFRP" atomicNumber="6" atomicWeight="12.1475*g/mole" density="1.84*g/cm3"/>
+<ElementaryMaterial name="tkLayout_Cu" symbol="Cu" atomicNumber="29" atomicWeight="63.2581*g/mole" density="8.96*g/cm3"/>
+<ElementaryMaterial name="tkLayout_Epoxy" symbol="Epoxy" atomicNumber="7" atomicWeight="13.9368*g/mole" density="1.16*g/cm3"/>
+<ElementaryMaterial name="tkLayout_Steel" symbol="Steel" atomicNumber="28" atomicWeight="58.335*g/mole" density="7.8*g/cm3"/>
+<ElementaryMaterial name="tkLayout_WB-enc" symbol="WB-enc" atomicNumber="7" atomicWeight="13.5157*g/mole" density="1.5*g/cm3"/>
+
+<CompositeMaterial name="hybridcompositeBModule1Layer4FSide" density="7.2584*g/cm3" method="mixture by weight">
+<MaterialFraction fraction="0.361741">
+<rMaterial name="DUT:tkLayout_2S-SEH-mix"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.00503905">
+<rMaterial name="DUT:tkLayout_Al"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.31998">
+<rMaterial name="DUT:tkLayout_Al-CF"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.0352734">
+<rMaterial name="DUT:tkLayout_Brass"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.0721844">
+<rMaterial name="DUT:tkLayout_CFRP"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.149849">
+<rMaterial name="DUT:tkLayout_Cu"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.00560595">
+<rMaterial name="DUT:tkLayout_Epoxy"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.0289116">
+<rMaterial name="DUT:tkLayout_Si"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.021416">
+<rMaterial name="DUT:tkLayout_Steel"/>
+</MaterialFraction>
+</CompositeMaterial>
+<CompositeMaterial name="hybridcompositeBModule1Layer4BSide" density="1.70986*g/cm3" method="mixture by weight">
+<MaterialFraction fraction="0.0122718">
+<rMaterial name="DUT:tkLayout_Al"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.779261">
+<rMaterial name="DUT:tkLayout_Al-CF"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.0859027">
+<rMaterial name="DUT:tkLayout_Brass"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.0704096">
+<rMaterial name="DUT:tkLayout_Si"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.0521552">
+<rMaterial name="DUT:tkLayout_Steel"/>
+</MaterialFraction>
+</CompositeMaterial>
+<CompositeMaterial name="hybridcompositeBModule1Layer4LSide" density="2.06361*g/cm3" method="mixture by weight">
+<MaterialFraction fraction="0.176874">
+<rMaterial name="DUT:tkLayout_2S-FEH-mix"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.00222698">
+<rMaterial name="DUT:tkLayout_Al"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.13242">
+<rMaterial name="DUT:tkLayout_Al-CF"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.422441">
+<rMaterial name="DUT:tkLayout_CFRP"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.107238">
+<rMaterial name="DUT:tkLayout_Cu"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.0431692">
+<rMaterial name="DUT:tkLayout_Epoxy"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.0393148">
+<rMaterial name="DUT:tkLayout_Si"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.0763169">
+<rMaterial name="DUT:tkLayout_WB-enc"/>
+</MaterialFraction>
+</CompositeMaterial>
+<CompositeMaterial name="hybridcompositeBModule1Layer4Between" density="0.257897*g/cm3" method="mixture by weight">
+<MaterialFraction fraction="0.936709">
+<rMaterial name="DUT:tkLayout_Al-CF"/>
+</MaterialFraction>
+<MaterialFraction fraction="0.0632911">
+<rMaterial name="DUT:tkLayout_Epoxy"/>
+</MaterialFraction>
+</CompositeMaterial>
+
+</MaterialSection>
+
+
+
+<LogicalPartSection label="DUT.xml">
+
+<LogicalPart name="BModule1Layer6" category="unspecified">
+<rSolid name="DUT:BModule1Layer6"/>
+<rMaterial name="materials:Air"/>
+</LogicalPart>
+<LogicalPart name="BModule1Layer6Lowerwafer" category="unspecified">
+<rSolid name="DUT:BModule1Layer6Lowerwafer"/>
+<rMaterial name="materials:Air"/>
+</LogicalPart>
+<LogicalPart name="BModule1Layer6Upperwafer" category="unspecified">
+<rSolid name="DUT:BModule1Layer6Upperwafer"/>
+<rMaterial name="materials:Air"/>
+</LogicalPart>
+<LogicalPart name="BModule1Layer6Lower2Sactive" category="unspecified">
+<rSolid name="DUT:BModule1Layer6Lower2Sactive"/>
+<rMaterial name="DUT:tkLayout_SenSi"/>
+</LogicalPart>
+<LogicalPart name="BModule1Layer6Upper2Sactive" category="unspecified">
+<rSolid name="DUT:BModule1Layer6Upper2Sactive"/>
+<rMaterial name="DUT:tkLayout_SenSi"/>
+</LogicalPart>
+<LogicalPart name="BModule1Layer6FSide" category="unspecified">
+<rSolid name="DUT:BModule1Layer6FSide"/>
+<rMaterial name="DUT:hybridcompositeBModule1Layer4FSide"/>
+</LogicalPart>
+<LogicalPart name="BModule1Layer6BSide" category="unspecified">
+<rSolid name="DUT:BModule1Layer6BSide"/>
+<rMaterial name="DUT:hybridcompositeBModule1Layer4BSide"/>
+</LogicalPart>
+<LogicalPart name="BModule1Layer6LSide" category="unspecified">
+<rSolid name="DUT:BModule1Layer6LSide"/>
+<rMaterial name="DUT:hybridcompositeBModule1Layer4LSide"/>
+</LogicalPart>
+<LogicalPart name="BModule1Layer6RSide" category="unspecified">
+<rSolid name="DUT:BModule1Layer6RSide"/>
+<rMaterial name="DUT:hybridcompositeBModule1Layer4LSide"/>
+</LogicalPart>
+<LogicalPart name="BModule1Layer6Between" category="unspecified">
+<rSolid name="DUT:BModule1Layer6Between"/>
+<rMaterial name="DUT:hybridcompositeBModule1Layer4Between"/>
+</LogicalPart>
+
+</LogicalPartSection>
+
+
+
+<SolidSection label="DUT.xml">
+
+<Box name="BModule1Layer6" dx="62.5*mm" dy="71.975*mm" dz="1.1*mm"/>
+<Box name="BModule1Layer6Lowerwafer" dx="45.72*mm" dy="50.25*mm" dz="0.1*mm"/>
+<Box name="BModule1Layer6Upperwafer" dx="45.72*mm" dy="50.25*mm" dz="0.1*mm"/>
+<Box name="BModule1Layer6Lower2Sactive" dx="45.72*mm" dy="50.25*mm" dz="0.1*mm"/>
+<Box name="BModule1Layer6Upper2Sactive" dx="45.72*mm" dy="50.25*mm" dz="0.1*mm"/>
+<Box name="BModule1Layer6FSide" dx="8.39*mm" dy="50.25*mm" dz="0.5*mm"/>
+<Box name="BModule1Layer6BSide" dx="8.39*mm" dy="50.25*mm" dz="0.5*mm"/>
+<Box name="BModule1Layer6LSide" dx="62.5*mm" dy="10.8625*mm" dz="0.5*mm"/>
+<Box name="BModule1Layer6RSide" dx="62.5*mm" dy="10.8625*mm" dz="0.5*mm"/>
+<Box name="BModule1Layer6Between" dx="45.72*mm" dy="50.25*mm" dz="0.5*mm"/>
+
+</SolidSection>
+
+
+
+<PosPartSection label="DUT.xml">
+
+<PosPart copyNumber="1">
+<rParent name="DUT:BModule1Layer6"/>
+<rChild name="DUT:BModule1Layer6Lowerwafer"/>
+<Translation x="0*mm" y="0*mm" z="-0.9*mm"/>
+</PosPart>
+<PosPart copyNumber="1">
+<rParent name="DUT:BModule1Layer6"/>
+<rChild name="DUT:BModule1Layer6Upperwafer"/>
+<Translation x="0*mm" y="0*mm" z="0.9*mm"/>
+</PosPart>
+<PosPart copyNumber="1">
+<rParent name="DUT:BModule1Layer6Lowerwafer"/>
+<rChild name="DUT:BModule1Layer6Lower2Sactive"/>
+</PosPart>
+<PosPart copyNumber="1">
+<rParent name="DUT:BModule1Layer6Upperwafer"/>
+<rChild name="DUT:BModule1Layer6Upper2Sactive"/>
+</PosPart>
+<PosPart copyNumber="1">
+<rParent name="DUT:BModule1Layer6"/>
+<rChild name="DUT:BModule1Layer6FSide"/>
+<Translation x="54.11*mm" y="0*mm" z="0*mm"/>
+</PosPart>
+<PosPart copyNumber="1">
+<rParent name="DUT:BModule1Layer6"/>
+<rChild name="DUT:BModule1Layer6BSide"/>
+<Translation x="-54.11*mm" y="0*mm" z="0*mm"/>
+</PosPart>
+<PosPart copyNumber="1">
+<rParent name="DUT:BModule1Layer6"/>
+<rChild name="DUT:BModule1Layer6LSide"/>
+<Translation x="0*mm" y="61.1125*mm" z="0*mm"/>
+</PosPart>
+<PosPart copyNumber="1">
+<rParent name="DUT:BModule1Layer6"/>
+<rChild name="DUT:BModule1Layer6RSide"/>
+<Translation x="0*mm" y="-61.1125*mm" z="0*mm"/>
+</PosPart>
+<PosPart copyNumber="1">
+<rParent name="DUT:BModule1Layer6"/>
+<rChild name="DUT:BModule1Layer6Between"/>
+</PosPart>
+
+</PosPartSection>
+
+
+
+</DDDefinition>
+
+
+

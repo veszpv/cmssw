@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+
+<DDDefinition xmlns="http://www.cern.ch/cms/DDL" xmlns:xsi="http://www.cern.ch/www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cern.ch/cms/DDL ../../../DetectorDescription/Schema/DDLSchema.xsd">
+
+
+<LogicalPartSection label="telescope.xml">
+<LogicalPart name="Telescope" category="unspecified">
+<rSolid name="telescope:Telescope"/>
+<rMaterial name="materials:Air"/>
+</LogicalPart>
+<LogicalPart name="DUTHolder" category="unspecified">
+<rSolid name="telescope:DUTHolder"/>
+<rMaterial name="materials:Air"/>
+</LogicalPart>
+<LogicalPart name="Arm" category="unspecified">
+<rSolid name="telescope:Arm"/>
+<rMaterial name="materials:Air"/>
+</LogicalPart>
+<LogicalPart name="Plane" category="unspecified">
+<rSolid name="telescope:Plane"/>
+<rMaterial name="materials:Air"/>
+</LogicalPart>
+</LogicalPartSection>
+
+
+
+<SolidSection label="telescope.xml">
+<Box name="Telescope" dx="500.0*mm" dy="300.0*mm" dz="1000.0*mm"/>
+<Box name="DUTHolder" dx="260.0*mm" dy="160.0*mm" dz="20.0*mm"/>
+<Box name="Arm" dx="70.0*mm" dy="160.0*mm" dz="100.0*mm"/>
+<Box name="Plane" dx="[Phase2BeamTestConstants:Phase1BPIXModuleWidth]" dy="[Phase2BeamTestConstants:Phase1BPIXModuleThickness]/2.0" dz="[Phase2BeamTestConstants:Phase1BPIXModuleLength]/2.0"/>
+</SolidSection>
+
+
+
+<PosPartSection label="telescope.xml">
+
+<!-- TELESCOPE MOTHER VOLUME -->
+<PosPart copyNumber="1">
+<rParent name="cms:OCMS"/>
+<rChild name="telescope:Telescope"/>
+</PosPart>
+
+
+<!-- PLACE DUT WITHIN TELESCOPE -->
+<PosPart copyNumber="1">
+<rParent name="telescope:Telescope"/>
+<rChild name="telescope:DUTHolder"/>
+<rRotation name="Phase2BeamTestConstants:DUTTiltMinus"/>
+<Translation x="[Phase2BeamTestConstants:DUTTransX]" y="[Phase2BeamTestConstants:DUTTransY]" z="[Phase2BeamTestConstants:DUTTransZ]"/>
+</PosPart>
+
+<PosPart copyNumber="1">
+<rParent name="telescope:DUTHolder"/>
+<rRotation name="Phase2BeamTestConstants:PlaceDUTInDUTHolder"/>
+<rChild name="DUT:BModule1Layer6"/>
+</PosPart>
+
+
+<!-- PLACE ARMS WITHIN TELESCOPE -->
+<PosPart copyNumber="1">
+<rParent name="telescope:Telescope"/>
+<rChild name="telescope:Arm"/>
+<Translation x="0.0*mm" y="0.0*mm" z="[Phase2BeamTestConstants:InterArmDeltaZ]/2.0"/>
+</PosPart>
+<PosPart copyNumber="2">
+<rParent name="telescope:Telescope"/>
+<rChild name="telescope:Arm"/>
+<Translation x="0.0*mm" y="0.0*mm" z="-[Phase2BeamTestConstants:InterArmDeltaZ]/2.0"/>
+</PosPart>
+
+<!-- PLACE PLANES WITHIN ARM -->
+<Algorithm name="telescope:DDTelescopePlanesAlgo">
+<rParent name="telescope:Arm"/>
+<String name="ChildName" value="telescope:Plane"/>
+<Numeric name="N" value="4"/>
+<Numeric name="tiltAngle" value="[Phase2BeamTestConstants:PlaneTiltAngle]"/>
+<Numeric name="skewAngle" value="[Phase2BeamTestConstants:PlaneSkewAngle]"/>
+<Numeric name="deltaZ" value="[Phase2BeamTestConstants:InterPlaneDeltaZ]"/>
+</Algorithm>
+
+<!-- PLACE PHASE1 MODULES WITHIN PLANE -->
+<PosPart copyNumber="1">
+<rParent name="telescope:Plane"/>
+<rChild name="Phase1BPIXLayer4Module:PixelBarrelModuleFullPlus"/>
+<Translation x="-[Phase2BeamTestConstants:Phase1BPIXModuleWidth]/2.0" y="0.0*mm" z="0.0*mm"/>
+</PosPart>
+<PosPart copyNumber="2">
+<rParent name="telescope:Plane"/>
+<rChild name="Phase1BPIXLayer4Module:PixelBarrelModuleFullPlus"/>
+<Translation x="[Phase2BeamTestConstants:Phase1BPIXModuleWidth]/2.0" y="0.0*mm" z="0.0*mm"/>
+</PosPart>
+
+
+
+<!--
+<PosPart copyNumber="1">
+<rParent name="telescope:Arm"/>
+<rChild name="telescope:Plane"/>
+<rRotation name="Phase2BeamTestConstants:PlaneSkew"/>
+<Translation x="0.0*mm" y="0.0*mm" z="-3.0*[Phase2BeamTestConstants:InterPlaneDeltaZ]/2.0"/>
+</PosPart>
+<PosPart copyNumber="2">
+<rParent name="telescope:Arm"/>
+<rChild name="telescope:Plane"/>
+<rRotation name="Phase2BeamTestConstants:PlaneSkew"/>
+<Translation x="0.0*mm" y="0.0*mm" z="-1.0*[Phase2BeamTestConstants:InterPlaneDeltaZ]/2.0"/>
+</PosPart>
+<PosPart copyNumber="3">
+<rParent name="telescope:Arm"/>
+<rChild name="telescope:Plane"/>
+<rRotation name="Phase2BeamTestConstants:PlaneSkew"/>
+<Translation x="0.0*mm" y="0.0*mm" z="1.0*[Phase2BeamTestConstants:InterPlaneDeltaZ]/2.0"/>
+</PosPart>
+<PosPart copyNumber="4">
+<rParent name="telescope:Arm"/>
+<rChild name="telescope:Plane"/>
+<rRotation name="Phase2BeamTestConstants:PlaneSkew"/>
+<Translation x="0.0*mm" y="0.0*mm" z="3.0*[Phase2BeamTestConstants:InterPlaneDeltaZ]/2.0"/>
+</PosPart>
+-->
+
+</PosPartSection>
+
+
+
+</DDDefinition>
+
+
+

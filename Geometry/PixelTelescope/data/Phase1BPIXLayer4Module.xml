@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+
+<DDDefinition xmlns="http://www.cern.ch/cms/DDL" xmlns:xsi="http://www.cern.ch/www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cern.ch/cms/DDL ../../../DetectorDescription/Schema/DDLSchema.xsd">
+
+
+
+<ConstantsSection label="Phase1BPIXLayer4Module.xml">
+ <Constant name="zero"              value="0.0*fm"/>
+ 
+ <Constant name="Length"            value="53.6*cm"/> 
+ <Constant name="ExternalLength"    value="54.00*cm"/> 
+ <Constant name="Modules"           value="8"/> 
+ <Constant name="ModulesPerSide"    value="[Modules]/2"/>
+ <Constant name="BaseThick"         value="0.20*mm"/>
+ <Constant name="ROChipThick0"       value="0.075*mm"/>
+ <Constant name="ROChipThick123"       value="0.175*mm"/>
+ <Constant name="SensorThick"       value="0.285*mm"/>
+ <Constant name="SensorDz"          value="6.66*cm"/>
+ <Constant name="SensorEdge"        value="1.20*mm"/>
+ <Constant name="ActiveDz"          value="6.48*cm"/>
+ <Constant name="HybridThick"       value="0.050*mm"/>
+ <Constant name="HybridDz"          value="6.50*cm"/>
+ <Constant name="ModuleCapThick"       value="0.070*mm"/>
+ <Constant name="CableThick"        value="1.5*mm"/> 
+ <Constant name="Cable1Length"          value="21.02*cm"/>
+ <Constant name="Cable2Length"          value="14.32*cm"/>
+ <Constant name="Cable3Length"          value="7.62*cm"/>
+ <Constant name="Cable4Length"          value="0.92*cm"/>
+ <Constant name="CableDzOverModule" value="1.93*cm"/>
+ <Constant name="Cable1Dz"          value="[Cable1Length]+[CableDzOverModule]"/>
+ <Constant name="Cable2Dz"          value="[Cable2Length]+[CableDzOverModule]"/>
+ <Constant name="Cable3Dz"          value="[Cable3Length]+[CableDzOverModule]"/>
+ <Constant name="Cable4Dz"          value="[Cable4Length]+[CableDzOverModule]"/>
+ <Constant name="CableBoundleDiameter"     value="1.3*mm"/> 
+ <Constant name="CableBoxThick"            value="[CableBoundleDiameter]"/> 
+ <Constant name="CapacitorZ"        value="2.80*cm"/> 
+ <Constant name="CapacitorThick"    value="1.50*mm"/>
+ <Constant name="CapacitorDx"       value="3.20*mm"/>
+ <Constant name="CapacitorDz"       value="2.50*mm"/>
+ <Constant name="CapacitorStripThick" value="0.50*mm"/> 
+ <Constant name="CapacitorStripDx"  value="0.50*mm"/> 
+ <Constant name="CapacitorStripDz"  value="([HybridDz]-2.0*mm)"/> 
+ <Constant name="TBMchipThick"      value="0.30*mm"/>
+ <Constant name="TBMchipDx"          value="3.20*mm"/>
+ <Constant name="TBMchipDz"          value="4.80*mm"/>
+ 
+ <!-- Module thick uses CapacitorThick since it is the highest object on the Hybrid surface -->
+ <Constant name="Module0Thick"       value="([ROChipThick0]+
+           [SensorThick]+[HybridThick]+[CapacitorStripThick]+[ModuleCapThick])"/> 
+ <Constant name="Module1Thick"       value="([BaseThick]+[ROChipThick123]+
+           [SensorThick]+[HybridThick]+[CapacitorStripThick]+[ModuleCapThick])"/>
+ <Constant name="Module23Thick"       value="([BaseThick]+[ROChipThick123]+
+           [SensorThick]+[HybridThick]+[CapacitorStripThick]+[ModuleCapThick])"/> 
+ 
+ <Constant name="ModuleDz"          value="[Length]/[Modules]"/>
+ <Constant name="ModuleZ"           value="-([Length]-[ModuleDz])/2"/>
+ <Constant name="Cable1BoundleX"           value="-([CableBoundleDiameter]+[CableBoundleDiameter]/2)"/> 
+ <Constant name="Cable2BoundleX"           value="-([CableBoundleDiameter]/2)"/> 
+ <Constant name="Cable3BoundleX"           value="([CableBoundleDiameter]/2)"/> 
+ <Constant name="Cable4BoundleX"           value="([CableBoundleDiameter]+[CableBoundleDiameter]/2)"/> 
+ <Constant name="Cable1Z"           value="([ExternalLength]-[Cable1Dz])/2"/>
+ <Constant name="Cable2Z"           value="([ExternalLength]-[Cable2Dz])/2"/>
+ <Constant name="Cable3Z"           value="([ExternalLength]-[Cable3Dz])/2"/>
+ <Constant name="Cable4Z"           value="([ExternalLength]-[Cable4Dz])/2"/>
+
+ 
+ <Constant name="CFStripThick"      value="0.5*mm"/>
+ <Constant name="CFStripWidth"      value="24.50*mm"/>
+ <Constant name="CFHoleWidth"       value="10.8*mm"/>
+ <Constant name="CFHoleDz"          value="11.8*mm"/>
+ <Constant name="CFHoles"           value="32"/>
+ <Constant name="CFHoleStep"        value="16.8*mm"/>
+ <Constant name="VirtualBaseWidth"  value="21.8*mm"/>
+ <Constant name="BaseWidth"         value="5*mm"/>
+ <Constant name="BaseX"             value="[VirtualBaseWidth]/2-[BaseWidth]/2"/>
+ <Constant name="ROChipWidth"       value="21.16*mm"/>
+ <Constant name="SensorWidth"       value="18.60*mm"/>
+ <Constant name="CableWidth"        value="1.5*mm"/>
+ <Constant name="HybridWidth"       value="18.80*mm"/>
+ <Constant name="CapacitorStripX"   value="8.25*mm"/>
+ <Constant name="ActiveWidth"       value="[SensorWidth]-
+           2*[SensorEdge]"/>
+ <Constant name="LadderWidth"       value="[CFStripWidth]"/>
+ <Constant name="LadderThick"       value="[CFStripThick]+
+           [Module23Thick]+[CableBoxThick]"/>
+ <Constant name="CableBoxY"         value="([LadderThick]-
+           [CableBoxThick])/2"/>
+ <Constant name="ModuleBoxY"        value="[CableBoxY]-
+           ([CableBoxThick]+[Module23Thick])/2"/>
+ <Constant name="CFStripY"          value="[ModuleBoxY]-
+           ([Module23Thick]+[CFStripThick])/2"/>
+ <Constant name="BaseY"             value="-([Module23Thick]-
+           [BaseThick])/2"/>
+ <Constant name="ROChipY"           value="[BaseY]+
+           ([BaseThick]+[ROChipThick123])/2"/>
+ <Constant name="SensorY"           value="[ROChipY]+
+           ([ROChipThick123]+[SensorThick])/2"/>
+ <Constant name="HybridY"           value="[SensorY]+
+           ([SensorThick]+[HybridThick])/2"/>
+ <Constant name="CapacitorY"        value="[HybridY]+
+           ([HybridThick]+[CapacitorThick])/2"/>
+ <Constant name="CapacitorStripY"   value="[HybridY]+
+           ([HybridThick]+[CapacitorStripThick])/2"/>
+ <Constant name="TBMchipY"   value="[HybridY]+
+           ([HybridThick]+[TBMchipThick])/2"/>
+ <Constant name="ModuleCapY"   value="[CapacitorStripY]+
+           ([CapacitorStripThick]+[ModuleCapThick])/2"/> 
+ <Constant name="CFHoleZ"           value="-([CFHoles]-1)*[CFHoleStep]/2"/>
+</ConstantsSection>
+
+
+
+<RotationSection label="Phase1BPIXLayer4Module.xml">
+  <Rotation name="Z2XY" thetaX="90*deg" phiX="0*deg"     thetaY="180*deg" 
+                        phiY="0*deg"    thetaZ="90*deg"  phiZ="90*deg" />
+  <Rotation name="Y180D" thetaX="90*deg" phiX="180*deg"   thetaY="90*deg" 
+                         phiY="90*deg"   thetaZ="180*deg" phiZ="0*deg" />
+</RotationSection>
+
+
+
+<!--
+<MaterialSection label="Phase1BPIXLayer4Module.xml">
+</MaterialSection>
+-->
+
+
+<LogicalPartSection label="Phase1BPIXLayer4Module.xml">
+
+<LogicalPart name="PixelBarrelModuleFullPlus" category="unspecified">
+  <rSolid name="PixelBarrelModuleFull"/>
+  <rMaterial name="materials:Air"/>
+</LogicalPart>
+
+ <LogicalPart name="PixelBarrelBaseFull" category="unspecified">
+  <rSolid name="PixelBarrelBaseFull"/>
+  <rMaterial name="pixbarmaterial:Pix_Bar_Baseplate_Full_Upgrade"/>
+ </LogicalPart>
+ 
+ <LogicalPart name="PixelBarrelROChipFull" category="unspecified">
+  <rSolid name="PixelBarrelROChipFull"/>
+  <rMaterial name="materials:Silicon"/>
+ </LogicalPart>
+ 
+ <LogicalPart name="PixelBarrelSensorFull" category="unspecified">
+  <rSolid name="PixelBarrelSensorFull"/>
+  <rMaterial name="materials:Silicon"/>
+ </LogicalPart>
+ 
+ <LogicalPart name="PixelBarrelActiveFull3" category="unspecified">
+  <rSolid name="PixelBarrelActiveFull"/>
+  <rMaterial name="materials:Silicon"/>
+ </LogicalPart>
+ 
+ <LogicalPart name="PixelBarrelHybridFull" category="unspecified">
+  <rSolid name="PixelBarrelHybridFull"/>
+  <rMaterial name="pixbarmaterial:Pix_Bar_Hybrid_Full"/>
+ </LogicalPart>
+ 
+  <LogicalPart name="PixelBarrelCapacitorStripFull" category="unspecified">
+  <rSolid name="PixelBarrelCapacitorStripFull"/>
+  <rMaterial name="pixbarmaterial:Pix_Bar_Capacitor"/>
+ </LogicalPart>
+ 
+ <LogicalPart name="PixelBarrelTBMFull" category="unspecified">
+  <rSolid name="PixelBarrelTBMFull"/>
+  <rMaterial name="materials:Silicon"/>
+ </LogicalPart>
+ 
+ <LogicalPart name="PixelBarrelModuleCapFull" category="unspecified">
+  <rSolid name="PixelBarrelModuleCapFull"/>
+  <rMaterial name="materials:T_Kapton"/>
+ </LogicalPart>
+
+</LogicalPartSection>
+
+
+
+<SolidSection label="Phase1BPIXLayer4Module.xml">
+<Box name="PixelBarrelModuleFull"       dx="[LadderWidth]/2.0"
+      dy="[Module23Thick]/2.0"     dz="[ModuleDz]/2.0"/>
+<Box name="PixelBarrelBaseFull"         dx="[BaseWidth]/2.0"
+      dy="[BaseThick]/2.0"       dz="[SensorDz]/2.0"/>
+<Box name="PixelBarrelROChipFull"       dx="[ROChipWidth]/2.0"
+      dy="[ROChipThick123]/2.0"     dz="[ActiveDz]/2.0"/>
+<Box name="PixelBarrelSensorFull"       dx="[SensorWidth]/2.0"
+      dy="[SensorThick]/2.0"     dz="[SensorDz]/2.0"/>
+<Box name="PixelBarrelActiveFull"       dx="[ActiveWidth]/2.0"
+      dy="[ActiveDz]/2.0"        dz="[SensorThick]/2.0"/>
+<Box name="PixelBarrelHybridFull"       dx="[HybridWidth]/2.0"
+      dy="[HybridThick]/2.0"     dz="[HybridDz]/2.0"/>
+<Box name="PixelBarrelCapacitorStripFull" dx="[CapacitorStripDx]/2.0"
+      dy="[CapacitorStripThick]/2.0" dz="[CapacitorStripDz]/2.0"/>
+<Box name="PixelBarrelTBMFull" dx="[TBMchipDx]/2.0"
+      dy="[TBMchipThick]/2.0" dz="[TBMchipDz]/2.0"/>
+<Box name="PixelBarrelModuleCapFull"       dx="[HybridWidth]/2.0"
+      dy="[ModuleCapThick]/2.0"     dz="[HybridDz]/2.0"/>
+
+</SolidSection>
+
+
+
+<PosPartSection label="Phase1BPIXLayer4Module.xml">
+
+<PosPart copyNumber="1">
+   <rParent name="PixelBarrelModuleFullPlus"/>
+   <rChild name="PixelBarrelBaseFull"/>
+  <Translation x="[BaseX]" y="[BaseY]" z="[zero]" />
+ </PosPart>
+ <PosPart copyNumber="2">
+   <rParent name="PixelBarrelModuleFullPlus"/>
+   <rChild name="PixelBarrelBaseFull"/>
+  <Translation x="-[BaseX]" y="[BaseY]" z="[zero]" />
+ </PosPart>
+ <PosPart copyNumber="1">
+   <rParent name="PixelBarrelModuleFullPlus"/>
+   <rChild name="PixelBarrelROChipFull"/>
+  <Translation x="[zero]" y="[ROChipY]" z="[zero]" />
+ </PosPart>
+ <PosPart copyNumber="1">
+   <rParent name="PixelBarrelModuleFullPlus"/>
+   <rChild name="PixelBarrelSensorFull"/>
+  <Translation x="[zero]" y="[SensorY]" z="[zero]" />
+  <rRotation name="Y180D"/>
+ </PosPart>
+ <PosPart copyNumber="1">
+   <rParent name="PixelBarrelSensorFull"/>
+   <rChild name="PixelBarrelActiveFull3"/>
+  <rRotation name="Z2XY"/>
+ </PosPart>
+ <PosPart copyNumber="1">
+   <rParent name="PixelBarrelModuleFullPlus"/>
+   <rChild name="PixelBarrelHybridFull"/>
+  <Translation x="[zero]" y="[HybridY]" z="[zero]" />
+ </PosPart>
+ <PosPart copyNumber="1">
+   <rParent name="PixelBarrelModuleFullPlus"/>
+   <rChild name="PixelBarrelCapacitorStripFull"/>
+  <Translation x="[CapacitorStripX]" y="[CapacitorStripY]" 
+               z="[zero]" />
+ </PosPart>
+ <PosPart copyNumber="2">
+   <rParent name="PixelBarrelModuleFullPlus"/>
+   <rChild name="PixelBarrelCapacitorStripFull"/>
+  <Translation x="-[CapacitorStripX]" y="[CapacitorStripY]" 
+               z="[zero]" />
+ </PosPart>
+ 
+ <PosPart copyNumber="1">
+   <rParent name="PixelBarrelModuleFullPlus"/>
+   <rChild name="PixelBarrelTBMFull"/>
+  <Translation x="[zero]" y="[TBMchipY]" 
+               z="[zero]" />
+ </PosPart>
+ <PosPart copyNumber="1">
+   <rParent name="PixelBarrelModuleFullPlus"/>
+   <rChild name="PixelBarrelModuleCapFull"/>
+  <Translation x="[zero]" y="[ModuleCapY]" 
+               z="[zero]" />
+ </PosPart> 
+
+</PosPartSection>
+
+
+
+</DDDefinition>
+
+
+
+ 
+ 
