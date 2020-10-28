@@ -28,7 +28,7 @@ public:
 
   PixelDigi() : theData(0) {}
 
-  void init(int row, int col, int adc, int flag=0) {
+  void init(int row, int col, int adc, int flag = 0) {
 #ifdef FIXME_DEBUG
     // This check is for the maximal row or col number that can be packed
     // in a PixelDigi. The actual number of rows or columns in a detector
@@ -58,7 +58,9 @@ public:
     return (theData >> PixelChannelIdentifier::thePacking.column_shift) &
            PixelChannelIdentifier::thePacking.column_mask;
   }
-  int flag() const    {return (theData >> PixelChannelIdentifier::thePacking.flag_shift) & PixelChannelIdentifier::thePacking.flag_mask;}
+  int flag() const {
+    return (theData >> PixelChannelIdentifier::thePacking.flag_shift) & PixelChannelIdentifier::thePacking.flag_mask;
+  }
   unsigned short adc() const {
     return (theData >> PixelChannelIdentifier::thePacking.adc_shift) & PixelChannelIdentifier::thePacking.adc_mask;
   }

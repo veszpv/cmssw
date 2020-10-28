@@ -90,7 +90,7 @@ private:
   std::vector<SiPixelCluster::PixelPos> theSeeds;  // cached seed pixels
   std::vector<SiPixelCluster> theClusters;         // resulting clusters
 
-  std::vector<bool> theFakePixels;                 // fake pixels introduced to guide clustering
+  std::vector<bool> theFakePixels;  // fake pixels introduced to guide clustering
 
   //! Clustering-related quantities:
   float thePixelThresholdInNoiseUnits;    // Pixel threshold in units of noise

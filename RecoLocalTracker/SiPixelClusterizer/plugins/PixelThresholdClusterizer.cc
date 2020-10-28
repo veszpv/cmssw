@@ -111,7 +111,7 @@ bool PixelThresholdClusterizer::setup(const PixelGeomDetUnit* pixDet) {
     theBuffer.setSize(nrows, ncols);  // Modify
   }
 
-  theFakePixels.resize(nrows*ncols, false);
+  theFakePixels.resize(nrows * ncols, false);
 
   return true;
 }
@@ -262,9 +262,9 @@ void PixelThresholdClusterizer::copy_to_buffer(DigiIterator begin, DigiIterator 
   for (DigiIterator di = begin; di != end; ++di) {
     int row = di->row();
     int col = di->column();
-	 // VV: do not calibrate a fake pixel, it already has a unit of 10e-:
-	 int adc = (di->flag()!=0) ? di->adc() * 10 : electron[i];  // this is in electrons
-	 i++;
+    // VV: do not calibrate a fake pixel, it already has a unit of 10e-:
+    int adc = (di->flag() != 0) ? di->adc() * 10 : electron[i];  // this is in electrons
+    i++;
 
 #ifdef PIXELREGRESSION
     int adcOld = calibrate(di->adc(), col, row);
@@ -284,8 +284,9 @@ void PixelThresholdClusterizer::copy_to_buffer(DigiIterator begin, DigiIterator 
 
     if (adc >= thePixelThreshold) {
       theBuffer.set_adc(row, col, adc);
-		// VV: add pixel to the fake list. Only when running on digi collection
-		if (di->flag()!=0) theFakePixels[row*theNumOfCols+col]=true;
+      // VV: add pixel to the fake list. Only when running on digi collection
+      if (di->flag() != 0)
+        theFakePixels[row * theNumOfCols + col] = true;
       if (adc >= theSeedThreshold)
         theSeeds.push_back(SiPixelCluster::PixelPos(row, col));
     }
@@ -444,10 +445,10 @@ SiPixelCluster PixelThresholdClusterizer::make_cluster(const SiPixelCluster::Pix
           if (!acluster.add(newpix, theBuffer(r, c)))
             goto endClus;
           theBuffer.set_adc(newpix, 1);
-			 // VV: no fake pixels in cluster, leads to non-contiguous clusters
-			 if (!theFakePixels[r*theNumOfCols+c]) {
-				cldata.add(newpix, theBuffer(r, c));
-			 }
+          // VV: no fake pixels in cluster, leads to non-contiguous clusters
+          if (!theFakePixels[r * theNumOfCols + c]) {
+            cldata.add(newpix, theBuffer(r, c));
+          }
         }
 
         /* //Commenting out the addition of dead pixels to the cluster until further testing -- dfehling 06/09
