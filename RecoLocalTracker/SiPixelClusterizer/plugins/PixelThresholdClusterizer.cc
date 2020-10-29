@@ -444,11 +444,11 @@ SiPixelCluster PixelThresholdClusterizer::make_cluster(const SiPixelCluster::Pix
           SiPixelCluster::PixelPos newpix(r, c);
           if (!acluster.add(newpix, theBuffer(r, c)))
             goto endClus;
-          theBuffer.set_adc(newpix, 1);
           // VV: no fake pixels in cluster, leads to non-contiguous clusters
           if (!theFakePixels[r * theNumOfCols + c]) {
             cldata.add(newpix, theBuffer(r, c));
           }
+          theBuffer.set_adc(newpix, 1);
         }
 
         /* //Commenting out the addition of dead pixels to the cluster until further testing -- dfehling 06/09
